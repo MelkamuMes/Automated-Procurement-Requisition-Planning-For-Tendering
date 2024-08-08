@@ -71,3 +71,45 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+Project Title:
+Automating Planning Procurement Requisition for Tendering
+
+Project Description:
+This project focuses on automating the data entry process involved in procurement requisitions during the planning phase of tendering. The goal is to streamline and reduce the manual effort required to input large volumes of procurement data, ensuring accuracy and efficiency in the tendering preparation process.
+
+Key Objectives:
+
+Automate Data Entry: Develop a system to automate the input of procurement requisition data, minimizing human errors and speeding up the planning phase.
+Integration with Existing Systems: Ensure seamless integration with existing procurement and tendering systems.
+Testing and Validation: The testing team will rigorously test the automated system to ensure it meets all functional requirements and performs well under different scenarios.
+
+Backend: [ NestJS] at these time the front end is already done the frontend team but my task is using axios cojugate the external api the  web is deployed
+
+
+
+
+Thank you!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
