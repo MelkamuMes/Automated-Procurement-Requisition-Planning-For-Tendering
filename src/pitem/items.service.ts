@@ -1,20 +1,23 @@
 import { Injectable } from "@nestjs/common";
-import { MethodService } from "src/pmethod/pmethod.service";
+
 import axios from 'axios';
 import { faker } from "@faker-js/faker";
+// import { FakeService } from "../pidentification/fake.service";
+import { MethodService } from "../pmethod/pmethod.service";
 
 @Injectable()
 export class ItemService {
+  private readonly  urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisition-items';
     constructor(
         private readonly methodservice: MethodService
     ) {}
 
     async createItemData() {
         const webToken = process.env.WEB_TOKEN;
-        const store = await this.methodservice.createProcurementMethod();
-        const id = store.procurementRequisitionId;
+        const {procurementRequisitionId} = await this.methodservice.createProcurementMethod();
+        // const id = store.procurementRequisitionId;
 
-        if (!id) {
+        if (!procurementRequisitionId) {
             throw new Error('Failed to retrieve procurementRequisitionId from MethodService');
         }
 
@@ -30,7 +33,7 @@ export class ItemService {
             id: faker.string.uuid(), // Ensure UUID is valid or use a placeholder if applicable
             itemCode: "85673351-00212",
             measurement: faker.string.uuid(), // Use a valid UUID or a placeholder if applicable
-            procurementRequisitionId: id,
+            procurementRequisitionId,
             quantity: quantity,
             unitPrice: unitPrice,
             calculatedAmount: calculatedAmount.toFixed(2),
@@ -38,9 +41,11 @@ export class ItemService {
             uom: "piece", // Ensure UUID if expected, otherwise correct value
         };
 
-        const urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisition-items';
+       
         try {
-            const response = await axios.post(urlapi, insertItemData, {
+            const ItemResponse = await axios.post(
+                this.urlapi,
+                 insertItemData, {
                 headers: {
                     Authorization: `Bearer ${webToken}`,
                     'Content-Type': 'application/json',
@@ -49,7 +54,7 @@ export class ItemService {
                 },
             });
             console.log("Items Data is sent successfully!");
-            return response.data;
+            return ItemResponse.data;
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Axios error status:', error.response?.status);

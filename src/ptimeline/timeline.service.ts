@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ItemService } from 'src/pitem/items.service';
 import axios from 'axios';
+import { ItemService } from '../pitem/items.service';
+import { FakeService } from '../pidentification/fake.service';
 
 @Injectable()
 export class TimeLineService {
-  constructor(private readonly itemService: ItemService) {}
+  private readonly TimeLineurlApi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisition-timelines/bulk-create';
+  constructor(private readonly itemservice: ItemService) {}
 
   private readonly timelines = [
     'Procurement Initiation',
@@ -18,77 +20,49 @@ export class TimeLineService {
   ];
 
   private calculatePeriod(order: number): number {
-    // Adjust periods based on the order
-    // Example logic: periods increase with the order
-    return 10 + order * 5;
+    return 10; // Fixed period for simplicity (based on your data)
   }
 
   async createTimeLine() {
     const webToken = process.env.WEB_TOKEN;
-    const store = await this.itemService.createItemData();
-    const id = store.procurementRequisitionId;
+    const {procurementRequisitionId} = await this.itemservice.createItemData();
 
-    if (!id) {
-      throw new Error('Failed to retrieve procurementRequisitionId from ItemService');
-    }
+    const timelineData = [];
+    let previousDueDate = new Date(); // Start from the current date
 
-    const insert = this.generateFakeBudgetData(id);
+    this.timelines.forEach((timeline, index) => {
+      const period = this.calculatePeriod(index);
+      const dueDate = new Date(previousDueDate);
+      dueDate.setDate(dueDate.getDate() + (index === 0 ? 0 : period)); // First timeline has no added period
 
-    const urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisition-timelines/bulk-create';
+      timelineData.push({
+        procurementRequisitionId,
+        dueDate: dueDate.toISOString(),
+        period,
+        timeline,
+        order: index,
+        appDueDate: new Date().toISOString(),
+      });
+
+      previousDueDate = dueDate; // Set for the next iteration
+    });
 
     try {
-      const response = await axios.post(urlapi, insert, {
+      const TimeLineResponse = await axios.post(this.TimeLineurlApi, timelineData, {
         headers: {
           Authorization: `Bearer ${webToken}`,
           'Content-Type': 'application/json',
-          Accept: 'application/json, text/plain, */*',
-          'User-Agent': 'axios/1.7.2',
         },
       });
-      console.log('Time Line data is sent successfully!');
-      return response.data;
+      console.log('Timeline created successfully!', TimeLineResponse.data);
+      return TimeLineResponse.data;
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.error('Axios error status:', error.response?.status);
-        console.error('Axios error data:', error.response?.data);
-        console.error('Axios error message:', error.message);
+        console.error('Axios error:', error.response?.data || error.message);
       } else {
         console.error('Unexpected error:', error);
       }
       throw error;
     }
-  }
-
-  generateFakeBudgetData(id: string): any[] {
-    interface Requisition {
-      procurementRequisitionId: string;
-      dueDate: string;
-      period: number;
-      timeline: string;
-      order: number;
-      appDueDate: string;
-    }
-
-    const InsertData: Requisition[] = [];
-    let baseDate = new Date(); // Start from today
-
-    this.timelines.forEach((timeline, index) => {
-      const period = this.calculatePeriod(index);
-      const dueDate = new Date(baseDate);
-      dueDate.setDate(dueDate.getDate() + period);
-
-      InsertData.push({
-        procurementRequisitionId: id,
-        dueDate: dueDate.toISOString(),
-        period,
-        timeline,
-        order: index,
-        appDueDate: baseDate.toISOString(),
-      });
-
-      baseDate = new Date(dueDate); // Update baseDate for next iteration
-    });
-
-    return InsertData;
   }
 }

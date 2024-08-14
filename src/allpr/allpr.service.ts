@@ -1,62 +1,60 @@
 import { Injectable } from "@nestjs/common";
-import { FakeService } from "src/pidentification/fake.service";
-import { MethodService } from "src/pmethod/pmethod.service";
-import { ItemService } from "src/pitem/items.service";
-
 import axios from 'axios'
-import { faker } from "@faker-js/faker";
-import { TimeLineService } from "src/ptimeline/timeline.service";
+// import { faker } from "@faker-js/faker";
+// import { FakeService } from "../pidentification/fake.service";
+// import { MethodService } from "../pmethod/pmethod.service";
+// import { ItemService } from "../pitem/items.service";
+import { TimeLineService } from "../ptimeline/timeline.service";
+
 
 @Injectable()
 export class allprService{
+    private readonly   urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisitions';
     constructor(
-        private readonly IdentifcationService:FakeService,
-        private readonly MethodService:MethodService,
-        private readonly itemservice:ItemService,
+        // private readonly IdentifcationService:FakeService,
+        // private readonly MethodService:MethodService,
+        // private readonly itemservice:ItemService,
         private readonly timelineservice:TimeLineService
         
     ){}
 
-    async createAllPR(){
+    async createAllPR(authHeader:string){
         const webToken = process.env.WEB_TOKEN;
-        const procurementItem = await this.itemservice.createItemData()
-        const procuremntidentifcation=await this.IdentifcationService.getFakesData()
-        const procuremntMethod=await this.MethodService.createProcurementMethod() 
-        const timeliine=await this.timelineservice.createTimeLine()
-        const prcoId=procuremntidentifcation.id
+       
+        // const prcoId=procuremntidentifcation.id
         
-        if (!prcoId) {
-            throw new Error('Failed to retrieve id from Identification');
-        
-        
-        }
-        const urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisitions';
-const requestData={
-...procuremntidentifcation,
-    ...procuremntMethod,
-    ...procurementItem
-}
+        // if (!prcoId) {
+        //     throw new Error('Failed to retrieve id from Identification');
+        // }
+      
+
 
         try {
-            const response = await axios.post(
-                urlapi,requestData,
-                 {
-                headers: {
-                    Authorization: `Bearer ${webToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json, text/plain, */*',
-                    'User-Agent': 'axios/1.7.2',
-                },
-            });
+            // const response = await axios.post(
+            //     this.urlapi,
+            //      {
+            //     headers: {
+            //         Authorization: `Bearer ${webToken}`,
+            //         'Content-Type': 'application/json',
+            //         'Accept': 'application/json, text/plain, */*',
+            //         'User-Agent': 'axios/1.7.2',
+            //     },
+            // });
+            // await this.IdentifcationService.getFakesData()
+            // await this.MethodService.createProcurementMethod() 
+            // await this.itemservice.createItemData()
+            await this.timelineservice.createTimeLine()
+
             console.log("all procuremnt data are register successfully!");
-            return response.data;
+          
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Axios error status:', error.response?.status);
                 console.error('Axios error data:', error.response?.data);
                 console.error('Axios error message:', error.message);
+                  
             } else {
-                console.error('Unexpected error:', error);
+                console.error('Error executing One Tender:', error);
             }
             throw error;
         }

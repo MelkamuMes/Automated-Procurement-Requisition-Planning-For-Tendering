@@ -4,13 +4,16 @@ import { FakeService } from '../pidentification/fake.service';
 
 @Injectable()
 export class MethodService {
+  private readonly urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-mechanisms';
+
   constructor(private readonly fakeService: FakeService) {}
 
   async createProcurementMethod() {
     const webToken = process.env.WEB_TOKEN;
-    const store = await this.fakeService.getFakesData();
-    const procId = store.id;
-    if (!procId) {
+    const {id:procurementRequisitionId} = await this.fakeService.getFakesData();
+    // const procId = store.id;
+
+    if (!procurementRequisitionId) {
       throw new Error('Failed to retrieve id from FakeService');
     }
 
@@ -25,17 +28,16 @@ export class MethodService {
       organizationId: "4326f20b-ff3d-4868-bf43-1b76d2766740",
       organizationName: "Asssociation of Early Childhood Development in Malawi",
       procurementMethod: "Request for Quotation (RFQ)",
-      procurementRequisitionId: procId,
+      procurementRequisitionId,
       procurementType: "Non Consulting Services",
       targetGroup: ["Others"],
       tenantId: 0,
       updatedAt: new Date().toISOString(),
     };
 
-    const urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-mechanisms';
-
+   
     try {
-      const response = await axios.post(urlapi, methodData, {
+      const MethodResponse = await axios.post(this.urlapi, methodData, {
         headers: {
           Authorization: `Bearer ${webToken}`,
           'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ export class MethodService {
         },
       });
       console.log("procuremnt Method Data is sent successfully!");
-      return response.data;
+      return MethodResponse.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Axios error status:', error.response?.status);

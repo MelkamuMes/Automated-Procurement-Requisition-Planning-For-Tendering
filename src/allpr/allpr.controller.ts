@@ -9,7 +9,8 @@ export class allprControllor{
     @Post('create')
     async createAllPR(
          @Headers('Authorization') authHeader: string){
-            return this.allprservice.createAllPR();
+            return this.allprservice.createAllPR(authHeader);
+            
           }
           
           
