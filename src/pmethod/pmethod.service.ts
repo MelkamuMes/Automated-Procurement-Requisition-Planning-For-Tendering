@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { FakeService } from '../pidentification/fake.service';
+import { FakeService } from '../pidentification/pidentification.service';
 
 @Injectable()
 export class MethodService {

@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 
 
-import {FakeModule} from '../pidentification/fake.module'
+import {FakeModule} from '../pidentification/pidentification.module'
 
 import { TimeLineService } from './timeline.service';
 import { TimelineController } from './timeline.controllor';

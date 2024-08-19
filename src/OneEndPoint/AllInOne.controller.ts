@@ -1,5 +1,5 @@
 import { Controller,Post,Headers} from "@nestjs/common";
-import { allprService } from "./allpr.service";
+import { allprService } from "./AllInOne.service";
 
 @Controller('allpr')
 export class allprControllor{
