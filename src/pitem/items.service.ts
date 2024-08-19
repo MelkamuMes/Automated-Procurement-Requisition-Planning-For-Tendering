@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import axios from 'axios';
 import { faker } from "@faker-js/faker";
-// import { FakeService } from "../pidentification/fake.service";
+import { FakeService } from "../pidentification/fake.service";
 import { MethodService } from "../pmethod/pmethod.service";
 
 @Injectable()

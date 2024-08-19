@@ -1,49 +1,49 @@
-import { Entity, Column,PrimaryColumn} from 'typeorm';
+// import { Entity, Column,PrimaryColumn} from 'typeorm';
 
-@Entity()
-export class fake {
-  @PrimaryColumn()
-  budgetId: string;
+// @Entity()
+// export class fake {
+//   @PrimaryColumn()
+//   budgetId: string;
 
-  @Column()
-  budgetYearId: string;
+//   @Column()
+//   budgetYearId: string;
 
-  @Column()
-  currency: string;
+//   @Column()
+//   currency: string;
 
-  @Column()
-  description: string;
+//   @Column()
+//   description: string;
 
-  @Column({ default: false })
-  isMultiYear: boolean;
+//   @Column({ default: false })
+//   isMultiYear: boolean;
 
-  @Column()
-  name: string;
+//   @Column()
+//   name: string;
 
-  @Column()
-  procurementApplication: string;
+//   @Column()
+//   procurementApplication: string;
 
-  @Column({ nullable: true })
-  remark?: string;
+//   @Column({ nullable: true })
+//   remark?: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  totalEstimatedAmount?: number;
+//   @Column({ type: 'decimal', precision: 10, scale: 2 })
+//   totalEstimatedAmount?: number;
 
-  @Column()
-  type: string;
+//   @Column()
+//   type: string;
 
  
-  constructor() {
-    this.budgetId = '';
-    this.budgetYearId = '';
-    this.currency = '';
-    this.description = '';
-    this.isMultiYear = false;
-    this.name = '';
-    this.procurementApplication = '';
-    this.type = '';
-  }
-}
+//   constructor() {
+//     this.budgetId = '';
+//     this.budgetYearId = '';
+//     this.currency = '';
+//     this.description = '';
+//     this.isMultiYear = false;
+//     this.name = '';
+//     this.procurementApplication = '';
+//     this.type = '';
+//   }
+// }
 
 // contract
 // : 

@@ -9,6 +9,10 @@ export class allprControllor{
     @Post('create')
     async createAllPR(
          @Headers('Authorization') authHeader: string){
+
+            if (!authHeader) {
+                throw new Error('Authorization header is missing');
+            }
             return this.allprservice.createAllPR(authHeader);
             
           }

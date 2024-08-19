@@ -26,7 +26,7 @@ export class FakeService {
       currency:'MKW',
       description: 'This is a description for tendering!!!',
       isMultiYear: faker.datatype.boolean(),
-      name: `INTERNES ${faker.commerce.productName()}`,
+      name: `INTERN @malik ${faker.commerce.productName()}`,
       procurementApplication: faker.helpers.arrayElement(procurementMethods),
       remark: faker.lorem.sentence(),
       totalEstimatedAmount: parseFloat(faker.finance.amount()),  // Ensure this is a number
