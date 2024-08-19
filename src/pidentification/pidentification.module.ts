@@ -1,14 +1,14 @@
 // src/procurement/procurement.module.ts
 import { Module } from '@nestjs/common';
-import { FakeService } from './pidentification.service';
+import { IdentificationService } from './pidentification.service';
 import { FakeController } from './pidentification.controller';
 
 @Module({
   
     
   controllers: [FakeController],
-  providers: [FakeService],
-  exports: [FakeService],
+  providers: [IdentificationService],
+  exports: [IdentificationService],
   
 })
 export class FakeModule {}

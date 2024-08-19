@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import axios from 'axios'
 import { faker } from "@faker-js/faker";
-import { FakeService } from "../pidentification/pidentification.service";
+import { IdentificationService } from "../pidentification/pidentification.service";
 import { MethodService } from "../pmethod/pmethod.service";
 import { ItemService } from "../pitem/items.service";
 import { TimeLineService } from "../ptimeline/timeline.service";
@@ -11,7 +11,7 @@ import { TimeLineService } from "../ptimeline/timeline.service";
 export class allprService{
     private readonly   urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisitions';
     constructor(
-        private readonly IdentifcationService:FakeService,
+        private readonly IdentifcationService:IdentificationService,
         private readonly MethodService:MethodService,
         private readonly itemservice:ItemService,
         private readonly timelineservice:TimeLineService
@@ -26,30 +26,42 @@ export class allprService{
         // if (!prcoId) {
         //     throw new Error('Failed to retrieve id from Identification');
         // }
-    //   * check if the authHeader is provided
-          if(!authHeader){
-            throw new Error('Authorization header is not prov')
-          }
-
+    // Ensure that the webToken is defined
+    if (!webToken) {
+        throw new Error('WEB_TOKEN is not defined');
+      }
+  
+      // Ensure that the authHeader is provided
+      if (!authHeader) {
+        throw new Error('Authorization header is not provided');
+      }
 
         try {
-            const response = await axios.post(
-                this.urlapi,
-                 {
-                headers: {
-                    Authorization: `Bearer ${webToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json, text/plain, */*',
-                    'User-Agent': 'axios/1.7.2',
-                },
-            });
+             // Retrieve data from other services
+    //   const { id: procurementRequisitionId } = await this.IdentifcationService.getFakesData();
+    //   await this.MethodService.createProcurementMethod();
+    //   await this.itemservice.createItemData();
+    //   await this.timelineservice.createTimeLine();
+
+    //    Send all data to the API
+            // const response = await axios.post(
+            //     this.urlapi,
+            //      {
+            //     headers: {
+            //         Authorization: `Bearer ${webToken}`,
+            //         'Content-Type': 'application/json',
+            //         'Accept': 'application/json, text/plain, */*',
+            //         'User-Agent': 'axios/1.7.2',
+            //     },
+            // });
             await this.IdentifcationService.getFakesData()
             await this.MethodService.createProcurementMethod() 
             await this.itemservice.createItemData()
             await this.timelineservice.createTimeLine()
 
             console.log("all procuremnt data are register successfully!");
-          
+            // return response.data;
+            
         } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Axios error status:', error.response?.status);
@@ -61,24 +73,6 @@ export class allprService{
             }
             throw error;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

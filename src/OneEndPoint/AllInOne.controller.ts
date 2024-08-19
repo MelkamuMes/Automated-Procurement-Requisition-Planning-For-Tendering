@@ -1,7 +1,7 @@
 import { Controller,Post,Headers} from "@nestjs/common";
 import { allprService } from "./AllInOne.service";
 
-@Controller('allpr')
+@Controller('AllInOne')
 export class allprControllor{
     constructor(
         private readonly allprservice:allprService

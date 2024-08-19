@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { FakeService } from '../pidentification/pidentification.service';
+import { IdentificationService } from '../pidentification/pidentification.service';
+import { Console } from 'console';
+import { response } from 'express';
 
 @Injectable()
 export class MethodService {
   private readonly urlapi = 'https://dev-bo.megp.peragosystems.com/planning/api/procurement-mechanisms';
 
-  constructor(private readonly fakeService: FakeService) {}
+  constructor(private readonly identificationService: IdentificationService) {}
 
   async createProcurementMethod() {
     const webToken = process.env.WEB_TOKEN;
-    const {id:procurementRequisitionId} = await this.fakeService.getFakesData();
+    const {id:procurementRequisitionId} = await this.identificationService.getFakesData(); //?destructuring assignment
     // const procId = store.id;
 
     if (!procurementRequisitionId) {
@@ -28,7 +30,7 @@ export class MethodService {
       organizationId: "4326f20b-ff3d-4868-bf43-1b76d2766740",
       organizationName: "Asssociation of Early Childhood Development in Malawi",
       procurementMethod: "Request for Quotation (RFQ)",
-      procurementRequisitionId,
+      procurementRequisitionId, //? the extracted and imported id will be put in here
       procurementType: "Non Consulting Services",
       targetGroup: ["Others"],
       tenantId: 0,

@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import axios from 'axios';
 
 @Injectable()
-export class FakeService {
+export class IdentificationService {
   
   
    private readonly urlapiProcurement = "https://dev-bo.megp.peragosystems.com/planning/api/procurement-requisitions";
@@ -26,7 +26,7 @@ export class FakeService {
       currency:'MKW',
       description: 'This is a description for tendering!!!',
       isMultiYear: faker.datatype.boolean(),
-      name: `INTERN @malik ${faker.commerce.productName()}`,
+      name: `INTERN @malik AutoGnr  ${faker.commerce.productName()}`,
       procurementApplication: faker.helpers.arrayElement(procurementMethods),
       remark: faker.lorem.sentence(),
       totalEstimatedAmount: parseFloat(faker.finance.amount()),  // Ensure this is a number
@@ -48,6 +48,7 @@ export class FakeService {
       );
       console.log("procuremnt Identifction is sent successfully!,res",IdentifctionResponse.data);
       return IdentifctionResponse.data;
+      // console.log("procuremnt Identifction is sent successfully!,res",IdentifctionResponse.data);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error('Error sending data to the web:', error.response?.data || error.message);
